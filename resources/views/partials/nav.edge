@@ -1,0 +1,61 @@
+<nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 shadow-sm">
+    <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div class="text-xl font-bold text-gray-800">
+                <a href="{{ route('dashboard') }}" class="hover:text-pink-600 transition-colors duration-200">Cinema Management</a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8">
+                @if(auth.user)
+                    <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-pink-600 font-medium transition-colors duration-200">Schedules</a>
+                    <a href="{{ route('tickets.history') }}" class="text-gray-600 hover:text-pink-600 font-medium transition-colors duration-200">Ticket History</a>
+
+                    @if(auth.user.isAdmin)
+                        <div class="relative group">
+                            <button class="text-gray-600 hover:text-pink-600 font-medium transition-colors duration-200 flex items-center space-x-1 py-2">
+                                <span>Management</span>
+                                <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="absolute invisible opacity-0 group-hover:visible group-hover:opacity-100 bg-white border border-gray-200 text-left w-48 rounded-lg shadow-lg py-2 top-full right-0 transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+                                <a href="{{ route('genres.index') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors duration-150">Genre</a>
+                                <a href="{{ route('films.index') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors duration-150">Film</a>
+                                <a href="{{ route('studios.index') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors duration-150">Studio</a>
+                                <a href="{{ route('schedules.index') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors duration-150">Schedules</a>
+                                <a href="{{ route('tickets.index') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors duration-150">Sold Tickets</a>
+                            </div>
+                        </div>
+                    @endif
+                @endif
+            </div>
+
+            <div class="flex items-center space-x-4">
+                @if(auth.user)
+                    <div class="relative group">
+                        <button class="text-gray-800 font-medium flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                            <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                {{ auth.user.name.split(' ')[0].charAt(0).toUpperCase() }}
+                            </div>
+                            <span>Hi, {{ auth.user.name.split(' ')[0] }}</span>
+                            <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                         <div class="absolute hidden group-hover:block bg-white border border-gray-200 text-left w-40 rounded-lg shadow-lg py-2 mt-2 right-0">
+                            <form action="{{ route('auth.logout') }}" method="POST" class="w-full">
+                                {{ csrfField() }}
+                                <button type="submit" class="w-full text-left block px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150 rounded-md mx-1">Logout</button>
+                            </form>
+                         </div>
+                    </div>
+                @else
+                    <a href="{{ route('auth.login.create') }}" class="text-gray-600 hover:text-gray-800 font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">Login</a>
+                    <a href="{{ route('auth.register.create') }}" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                        Register
+                    </a>
+                @endif
+            </div>
+        </div>
+    </div>
+</nav>
