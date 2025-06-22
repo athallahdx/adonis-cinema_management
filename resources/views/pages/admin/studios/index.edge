@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800 font-sans min-h-screen">
+  @include('partials/nav')
+  
+  <main class="container mx-auto px-6 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">Studio Management</h1>
+        <p class="text-gray-600">Manage cinema studios and seating capacity</p>
+      </div>
+      <a href="{{ route('studios.create') }}" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Add Studio
+        </span>
+      </a>
+    </div>
+
+    @if(flashMessages.get('success'))
+      <div class="p-4 mb-6 text-sm text-green-700 bg-green-50 rounded-xl border border-green-200 shadow-sm">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          {{ flashMessages.get('success') }}
+        </div>
+      </div>
+    @endif
+
+    <div class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl overflow-hidden border border-white/20">
+      <div class="overflow-x-auto">
+        <table class="min-w-full leading-normal">
+          <thead>
+            <tr class="bg-gradient-to-r from-pink-50 to-purple-50 border-b border-gray-200">
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                  </svg>
+                  ID
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                  </svg>
+                  Studio Name
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                  Capacity
+                </div>
+              </th>
+              <th class="px-6 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center justify-end">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                  </svg>
+                  Actions
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            @each(studio in studios)
+              <tr class="hover:bg-gradient-to-r hover:from-pink-50 hover:to-purple-50 transition-all duration-200">
+                <td class="px-6 py-5">
+                  <div class="flex items-center">
+                    <span class="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 text-sm font-semibold rounded-full">
+                      {{ studio.id }}
+                    </span>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="text-lg font-semibold text-gray-900">{{ studio.name }}</div>
+                      <div class="text-sm text-gray-500">Cinema Hall</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex items-center">
+                    <div class="flex items-center bg-blue-50 px-3 py-2 rounded-lg">
+                      <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                      </svg>
+                      <span class="text-blue-800 font-semibold">{{ studio.capacity }}</span>
+                      <span class="text-blue-600 text-sm ml-1">seats</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-5 text-right">
+                  <div class="flex items-center justify-end space-x-3">
+                    <a href="{{ route('studios.edit', { id: studio.id }) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 transition-colors duration-200">
+                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                      Edit
+                    </a>
+                    <form action="{{ route('studios.destroy', { id: studio.id }) }}?_method=DELETE" method="POST" class="inline-block" onsubmit="return confirm('Are you sure?')">
+                      {{ csrfField() }}
+                      <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 text-sm font-medium rounded-lg hover:bg-red-200 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            @else
+              <tr>
+                <td colspan="4" class="text-center py-16">
+                  <div class="flex flex-col items-center justify-center">
+                    <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">No Studios Found</h3>
+                    <p class="text-gray-500 max-w-md text-center mb-4">You haven't added any cinema studios yet. Start setting up your theater by adding your first studio.</p>
+                    <a href="{{ route('studios.create') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                      </svg>
+                      Add Your First Studio
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>	
+</html>
