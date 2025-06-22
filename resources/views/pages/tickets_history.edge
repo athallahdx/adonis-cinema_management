@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticket History | Cinema Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800 font-sans min-h-screen">
+  
+  @include('partials/nav')
+
+  <main class="container mx-auto px-6 py-8">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">My Ticket Purchase History</h1>
+      <p class="text-gray-600">View all your movie ticket purchases and booking details</p>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl overflow-hidden border border-white/20">
+      <div class="overflow-x-auto">
+        <table class="min-w-full leading-normal">
+          <thead>
+            <tr class="bg-gradient-to-r from-pink-50 to-purple-50 border-b border-gray-200">
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h4a1 1 0 011 1v1a1 1 0 01-1 1v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7a1 1 0 01-1-1V5a1 1 0 011-1h4z"></path>
+                  </svg>
+                  Film
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z"></path>
+                  </svg>
+                  Schedule
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                  </svg>
+                  Price
+                </div>
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z"></path>
+                  </svg>
+                  Purchase Date
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            @each(ticket in tickets)
+              <tr class="hover:bg-gradient-to-r hover:from-pink-50 hover:to-purple-50 transition-all duration-200">
+                <td class="px-6 py-5">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 w-16 h-24 rounded-lg overflow-hidden shadow-md">
+                      @if (ticket.schedule.film.image)
+                        <img class="w-full h-full object-cover" src="{{ asset(ticket.schedule.film.image) }}" alt="Poster Film">
+                      @else
+                        <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-500 font-medium">
+                          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                          </svg>
+                        </div>
+                      @endif
+                    </div>
+                    <div class="ml-4">
+                      <p class="text-gray-900 font-semibold text-lg">
+                        {{ ticket.schedule.film.title }}
+                      </p>
+                      <div class="flex items-center mt-1">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                          <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                          </svg>
+                          Purchased
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="space-y-1">
+                    <p class="text-gray-900 font-semibold flex items-center">
+                      <svg class="w-4 h-4 mr-2 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                      </svg>
+                      {{ ticket.schedule.studio.name }}
+                    </p>
+                    <p class="text-gray-600 flex items-center">
+                      <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z"></path>
+                      </svg>
+                      {{ ticket.schedule.date.toLocaleDateString('en-GB') }} - {{ ticket.schedule.time.substring(0, 5) }}
+                    </p>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex items-center">
+                    <span class="text-2xl font-bold text-green-600">Rp</span>
+                    <span class="text-xl font-bold text-gray-900 ml-1">{{ ticket.price.toLocaleString('id-ID') }}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex items-center">
+                    <div class="bg-gray-100 rounded-lg px-3 py-2">
+                      <p class="text-gray-900 font-medium">{{ ticket.createdAt.toFormat('dd LLL yyyy') }}</p>
+                      <p class="text-gray-600 text-sm">{{ ticket.createdAt.toFormat('HH:mm') }}</p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            @else
+              <tr>
+                <td colspan="4" class="text-center py-16">
+                  <div class="flex flex-col items-center justify-center">
+                    <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1V7a2 2 0 00-2-2H5zM5 14a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1v-3a2 2 0 00-2-2H5z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">No Tickets Found</h3>
+                    <p class="text-gray-500 max-w-md text-center">You haven't purchased any movie tickets yet. Start browsing our current shows to book your first ticket!</p>
+                    <a href="{{ route('dashboard') }}" class="mt-4 inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1V7a2 2 0 00-2-2H5zM5 14a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1v-3a2 2 0 00-2-2H5z"></path>
+                      </svg>
+                      Browse Movies
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
