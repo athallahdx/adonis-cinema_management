@@ -1,1 +1,1 @@
-console.log('Hello World')
+console.log('AdonisJS app.js loaded successfully!');
