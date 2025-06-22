@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Now Showing | Cinema Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800 font-sans min-h-screen">
+  
+  @include('partials/nav')
+
+  <main class="container mx-auto px-6 py-8">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">NOW SHOWING</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Select your favorite movie and book your tickets now!</p>
+    </div>
+    
+    @if(flashMessages.get('success'))
+      <div class="p-4 mb-6 text-sm text-green-700 bg-green-50 rounded-xl border border-green-200 shadow-sm">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          {{ flashMessages.get('success') }}
+        </div>
+      </div>
+    @endif
+    @if(flashMessages.get('error'))
+      <div class="p-4 mb-6 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200 shadow-sm">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+          </svg>
+          {{ flashMessages.get('error') }}
+        </div>
+      </div>
+    @endif
+
+    <div class="bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-lg mb-8 border border-white/20">
+      <form method="GET" action="{{ route('dashboard') }}" class="flex flex-col md:flex-row items-end space-y-4 md:space-y-0 md:space-x-6">
+        <div class="w-full md:w-auto">
+          <label for="date" class="block text-sm font-semibold text-gray-700 mb-2">Date</label>
+          <input type="date" name="selectedDate" value="{{ selectedDate || '' }}" id="date" class="w-full bg-white border-2 border-gray-200 text-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 shadow-sm">
+        </div>
+        <div class="w-full md:w-auto">
+          <label for="genre" class="block text-sm font-semibold text-gray-700 mb-2">Genre</label>
+          <select name="selectedGenre" id="genre" class="w-full bg-white border-2 border-gray-200 text-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 shadow-sm">
+            <option value="">All Genres</option>
+            @each(genre in genres)
+              <option value="{{ genre.id }}" {{ selectedGenre == genre.id ? 'selected' : '' }}>{{ genre.name }}</option>
+            @endeach
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+            <span class="flex items-center justify-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
+              </svg>
+              Filter
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Daftar Jadwal -->
+    @each(filmGroup in schedulesByFilm)
+      <div class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-gray-800 border-l-4 border-pink-500 pl-4">{{ filmGroup.title }}</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          @each(schedule in filmGroup.schedules)
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl border border-gray-100">
+              <div class="relative">
+                <img src="{{ schedule.film.image ? asset(schedule.film.image) : 'https://placehold.co/400x600/f8fafc/64748b?text=No+Poster' }}" alt="Poster {{ schedule.film.title }}" class="w-full h-96 object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                <div class="absolute top-4 right-4">
+                  <div class="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                    <span class="text-xs font-semibold text-gray-800">{{ schedule.ticketAvailable }} left</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-0 left-0 p-6">
+                  <div class="bg-white/20 backdrop-blur-sm rounded-lg p-3 border border-white/30">
+                    <h3 class="text-lg font-bold text-white mb-1">{{ schedule.studio.name }}</h3>
+                    <p class="text-2xl font-extrabold text-white">{{ schedule.time.substring(0, 5) }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <p class="text-sm font-semibold text-pink-600 bg-pink-50 px-3 py-1 rounded-full">
+                    {{ schedule.ticketAvailable }} tickets available
+                  </p>
+                </div>
+                <form action="{{ route('tickets.buy', { id: schedule.id }) }}" method="POST">
+                  {{ csrfField() }}
+                  @if (schedule.ticketAvailable > 0)
+                    <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105">
+                      <span class="flex items-center justify-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1V7a2 2 0 00-2-2H5zM5 14a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1v-3a2 2 0 00-2-2H5z"></path>
+                        </svg>
+                        Buy Ticket
+                      </span>
+                    </button>
+                  @else
+                    <button class="w-full bg-gray-200 text-gray-500 font-semibold py-3 px-4 rounded-xl cursor-not-allowed opacity-60" disabled>
+                      <span class="flex items-center justify-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Sold Out
+                      </span>
+                    </button>
+                  @endif
+                </form>
+              </div>
+            </div>
+          @endeach
+        </div>
+      </div>
+    @else
+      <div class="bg-white/70 backdrop-blur-md text-center p-12 rounded-2xl shadow-lg border border-white/20">
+        <div class="max-w-md mx-auto">
+          <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1V7a2 2 0 00-2-2H5zM5 14a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1v-3a2 2 0 00-2-2H5z"></path>
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-700 mb-2">No Shows Available</h3>
+          <p class="text-gray-500">No schedules available for the selected date or genre. Try adjusting your filters.</p>
+        </div>
+      </div>
+    @endeach
+  </main>
+</body>
+</html>
