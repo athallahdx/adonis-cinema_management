@@ -36,13 +36,17 @@ router.use([
   () => import('@adonisjs/core/bodyparser_middleware'),
   () => import('@adonisjs/session/session_middleware'),
   () => import('@adonisjs/shield/shield_middleware'),
-  () => import('@adonisjs/auth/initialize_auth_middleware')
+  () => import('@adonisjs/auth/initialize_auth_middleware'),
+  // Anda tidak perlu mendaftarkan middleware 'admin' di sini jika hanya digunakan sebagai alias
 ])
 
 /**
  * Named middleware collection must be explicitly assigned to
  * the routes or the routes group.
  */
+// KUNCI PERBAIKAN: Gabungkan semua named middleware ke dalam satu objek ini.
 export const middleware = router.named({
-  auth: () => import('#middleware/auth_middleware')
+  guest: () => import('#middleware/guest_middleware'),
+  auth: () => import('#middleware/auth_middleware'),
+  admin: () => import('#middleware/admin_middleware'), // Tambahkan alias 'admin' di sini
 })
